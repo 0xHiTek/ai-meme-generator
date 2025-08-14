@@ -1,0 +1,4 @@
+cat > pnpm-workspace.yaml << 'EOF'
+packages:
+  - 'packages/*'
+EOF
