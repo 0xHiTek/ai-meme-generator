@@ -1,0 +1,99 @@
+generator kysely {
+  provider = "prisma-kysely"
+  output   = "../../shared/src/db"
+  fileName = "types.ts"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  apiKey    String   @unique @default(cuid())
+  createdAt DateTime @default(now())
+  memes     Meme[]
+  jobs      Job[]
+}
+
+model Meme {
+  id          String    @id @default(cuid())
+  userId      String
+  vibe        String
+  caption     String
+  imageUrl    String
+  templateId  String?
+  status      MemeStatus @default(PENDING)
+  metadata    Json
+  createdAt   DateTime  @default(now())
+  
+  user        User      @relation(fields: [userId], references: [id])
+  posts       Post[]
+}
+
+model Post {
+  id          String    @id @default(cuid())
+  memeId      String
+  platform    Platform
+  postId      String?   // External platform post ID
+  status      PostStatus @default(PENDING)
+  scheduledAt DateTime?
+  publishedAt DateTime?
+  metrics     Json?
+  error       String?
+  createdAt   DateTime  @default(now())
+  
+  meme        Meme      @relation(fields: [memeId], references: [id])
+}
+
+model Job {
+  id          String    @id @default(cuid())
+  userId      String
+  type        JobType
+  status      JobStatus @default(PENDING)
+  payload     Json
+  result      Json?
+  error       String?
+  attempts    Int       @default(0)
+  createdAt   DateTime  @default(now())
+  completedAt DateTime?
+  
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+enum MemeStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum PostStatus {
+  PENDING
+  SCHEDULED
+  PUBLISHED
+  FAILED
+}
+
+enum Platform {
+  TWITTER
+  REDDIT
+  INSTAGRAM
+  TIKTOK
+}
+
+enum JobType {
+  GENERATE_MEME
+  BATCH_GENERATE
+  PUBLISH_POST
+  SCHEDULE_POST
+}
+
+enum JobStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
