@@ -1,0 +1,37 @@
+{
+  "name": "@meme/api",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "test": "vitest",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "db:migrate": "prisma migrate dev",
+    "db:generate": "prisma generate"
+  },
+  "dependencies": {
+    "@fastify/cors": "^9.0.0",
+    "@fastify/multipart": "^8.0.0",
+    "@fastify/rate-limit": "^9.0.0",
+    "@sinclair/typebox": "^0.32.0",
+    "fastify": "^4.25.0",
+    "kysely": "^0.27.0",
+    "pg": "^8.11.0",
+    "openai": "^4.0.0",
+    "sharp": "^0.33.0",
+    "bullmq": "^5.0.0",
+    "ioredis": "^5.0.0",
+    "@aws-sdk/client-s3": "^3.0.0",
+    "axios": "^1.6.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.0.0",
+    "vitest": "^1.0.0",
+    "prisma": "^5.0.0",
+    "prisma-kysely": "^1.0.0"
+  }
+}
